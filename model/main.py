@@ -118,21 +118,22 @@ def show_random_crops(input_directory, num_images=3):
 show_dataset_path = f'{train_dataset_path}/notumor'
 show_random_crops(show_dataset_path)
 
-# standard transform
 train_transform = transforms.Compose([
-    transforms.Resize((224, 224)), 
+    transforms.Resize((224, 224)),  # Resize to 224x224
+    # transforms.Grayscale(num_output_channels=3),  # Convert grayscale to "RGB"
+    transforms.ColorJitter(brightness=0.5) ,  # Adjust brightness
+    transforms.RandomHorizontalFlip(p=0.5),  # Random horizontal flip
+    # transforms.RandomVerticalFlip(p=0.5),
     transforms.ToTensor(),
-    transforms.Normalize(mean=[0.485], std=[0.229]) 
+    transforms.Normalize(mean=[0.485],
+                         std=[0.229]),  # Normalization
 ])
 
-# Create the dataset via MedAugment
+
+# Create the dataset
 train_dataset = BrainTumorDataset(dataset_path=cropped_train_dataset_path,
                                   categories=categories,
-                                  transform=train_transform,
-                                  med_augment=True,
-                                  med_augment_level=5,
-                                  med_augment_branch=4)
-
+                                  transform=train_transform)
 
 # create train dataset
 train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers)

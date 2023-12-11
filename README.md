@@ -31,4 +31,4 @@ The model demonstrated superior learning ability, outperforming pre-trained mode
 Future research will focus on the implementation of advanced image augmentation techniques, integration of multi-scale network architecture, and adaptive dilation convolution rates.
 
 ## Contributions
-This work was collaboratively conducted by Yuannong Mao and Edward Jiwook Kim from University of Waterloo.
+This work was collaboratively conducted by [Yuannong Mao](www.linkedin.com/in/yuannongmao) and [Edward Jiwook Kim](www.linkedin.com/in/edwardjiwookkim) from University of Waterloo.

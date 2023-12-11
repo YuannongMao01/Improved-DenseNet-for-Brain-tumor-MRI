@@ -3,11 +3,16 @@
 ## Overview
 This project presents an innovative adaptation of the DenseNet121 architecture, integrating dilated convolution layers with the Squeeze-and-Excitation (SE) networks for enhanced diagnostic accuracy in brain tumor classification through MRI images.
 
+<img width="782" alt="Screen Shot 2023-12-10 at 10 39 50 PM" src="https://github.com/YuannongMao01/Improved-DenseNet-for-Brain-tumor-MRI/assets/89234579/a6bbfe56-f307-4e04-a74a-3b12ee064747">
+
+
 ## Data
 We trained and evaluated our model using a comprehensive Kaggle brain tumor dataset comprising 7023 images, classified into four categories, including healthy brain. The dataset was augmented and preprocessed for optimal model training.
 
 ## Model Architecture
 Our model advances upon the traditional DenseNet-121 architecture, integrating dilated convolution in place of some standard convolutional layers and augmenting with an SE mechanism. These innovations enhance the model’s representation learning capabilities.
+
+<img width="1102" alt="Screen Shot 2023-12-10 at 10 44 07 PM" src="https://github.com/YuannongMao01/Improved-DenseNet-for-Brain-tumor-MRI/assets/89234579/1e657d3b-dd96-4e39-a2a3-f97662170fa9">
 
 ## Training
 We used the AdamW optimizer with a custom Label Smoothing cross-entropy loss function and employed a Cosine Annealing learning rate scheduler. The model was trained over 50 epochs with a batch size of 256.

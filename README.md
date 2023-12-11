@@ -23,5 +23,8 @@ Our evaluation used a 10-crop method, involving resizing each image to 256 × 25
 ## Results
 The model demonstrated superior learning ability, outperforming pre-trained models: ResNet50, VGG16, ViT_16, DenseNet121, and Efficient_V2 in later training epochs and in testing.
 
+<img width="1088" alt="Screen Shot 2023-12-10 at 10 49 14 PM" src="https://github.com/YuannongMao01/Improved-DenseNet-for-Brain-tumor-MRI/assets/89234579/ae58fc9d-2886-4d62-8bb7-f7d1f63250a9">
+
+
 ## Future Work
 Future research will focus on the implementation of advanced image augmentation techniques, integration of multi-scale network architecture, and adaptive dilation convolution rates.

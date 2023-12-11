@@ -7,7 +7,8 @@ This repository implements the enhanced DenseNet121 architecture integrated by d
 
 
 ## Data
-We trained and evaluated our model using a comprehensive Kaggle brain tumor dataset comprising 7023 images, classified into four categories, including healthy brain. The dataset was augmented and preprocessed for optimal model training.
+We trained and evaluated our model using a comprehensive Kaggle brain tumor dataset comprising 7023 images, classified into four categories, including healthy brain. The dataset was augmented and preprocessed for optimal model training.\
+The dataset can be found [here](https://www.kaggle.com/datasets/masoudnickparvar/brain-tumor-mri-dataset)
 
 ## Model Architecture
 Our model advances upon the traditional DenseNet-121 architecture, integrating dilated convolution in place of some standard convolutional layers and augmenting with an SE mechanism. These innovations enhance the model’s representation learning capabilities.
@@ -28,3 +29,6 @@ The model demonstrated superior learning ability, outperforming pre-trained mode
 
 ## Future Work
 Future research will focus on the implementation of advanced image augmentation techniques, integration of multi-scale network architecture, and adaptive dilation convolution rates.
+
+## Contributions
+This work was collaboratively conducted by Yuannong Mao and Edward Jiwook Kim from University of Waterloo.

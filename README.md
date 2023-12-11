@@ -1,7 +1,7 @@
 # Dilated SE-DenseNet for Radiographic Brain Tumor Classification
 
 ## Overview
-This project presents an innovative adaptation of the DenseNet121 architecture, integrating dilated convolution layers with the Squeeze-and-Excitation (SE) networks for enhanced diagnostic accuracy in brain tumor classification through MRI images.
+This repository implements the enhanced DenseNet121 architecture integrated by dilated convolution and Squeeze-and-Excitation (SE) networks by Pytorch to improve the diagnostic accuracy in brain tumor classification through MRI images.
 
 <img width="782" alt="Screen Shot 2023-12-10 at 10 39 50 PM" src="https://github.com/YuannongMao01/Improved-DenseNet-for-Brain-tumor-MRI/assets/89234579/a6bbfe56-f307-4e04-a74a-3b12ee064747">
 

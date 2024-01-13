@@ -24,6 +24,8 @@ from train import train_model
 from evaluate import evaluate_model
 from Dilated_SEDenseNet_model import SE_DenseNet
 
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
 print(torch.__version__)
 
 ## seed Setting

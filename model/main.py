@@ -18,7 +18,7 @@ import torch.optim as optim
 from torch.utils.data import DataLoader,random_split, Subset
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import f1_score, recall_score
-from transformers import AdamW
+from torch.optim import AdamW
 
 from brain_tumor_dataset import BrainTumorDataset
 from train import train_model

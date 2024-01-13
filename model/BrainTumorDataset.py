@@ -1,6 +1,5 @@
 class BrainTumorDataset(torch.utils.data.Dataset):
-    # def __init__(self, dataset_path, categories, transform=None):
-    def __init__(self, dataset_path, categories, transform=None, med_augment=False, med_augment_level=5, med_augment_branch=4):
+    def __init__(self, dataset_path, categories, transform=None):
         self.dataset_path = dataset_path
         self.categories = categories
         self.transform = transform

@@ -114,17 +114,17 @@ class SE_DenseNet(nn.Module):
         self.relu = nn.ReLU(inplace=True)
         self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
 
-        # Dense-Block 1 and transition (56x56)
+        # Dense-Block 1 
         # self.dense1 = self._make_layer(block, layers[0])
         self.dense1 = self._make_layer(block, layers[0], block_num=1)
         self.trans1 = self._make_transition(compressionRate)
-        # Dense-Block 2 and transition (28x28)
+        # Dense-Block 2 
         self.dense2 = self._make_layer(block, layers[1], block_num=2)
         self.trans2 = self._make_transition(compressionRate)
-        # Dense-Block 3 and transition (14x14)
+        # Dense-Block 3
         self.dense3 = self._make_layer(block, layers[2], block_num=3)
         self.trans3 = self._make_transition(compressionRate)
-        # Dense-Block 4 (14x14)
+        # Dense-Block 4
         self.dense4 = self._make_layer(block, layers[3], block_num=4)
 
         self.bn = nn.BatchNorm2d(self.inplanes)
@@ -143,12 +143,6 @@ class SE_DenseNet(nn.Module):
                 m.bias.data.zero_()
 
     def _make_layer(self, block, blocks, block_num):
-        """ Stack n bottleneck modules where n is inferred from the depth of the network.
-        Args:
-            block: block type used to construct DenseNet
-            blocks: number of blocks to be built
-        Returns: a Module consisting of n sequential bottlenecks.
-        """
         layers = []
         for i in range(blocks):
             dilation = 1

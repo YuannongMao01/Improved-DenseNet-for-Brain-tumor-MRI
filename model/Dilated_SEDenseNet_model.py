@@ -8,18 +8,14 @@ import torch
 
 
 class SEDenseBottleneck(nn.Module):
-    # def __init__(self, inplanes, expansion=4, growthRate=32, dropRate=0):
-    def __init__(self, inplanes, expansion=4, growthRate=32, dropRate=0, dilation=1):
+    def __init__(self, inplanes, expansion=4, growthRate=32, dropRate=0, dilation = 1):
         super(SEDenseBottleneck, self).__init__()
         planes = expansion * growthRate
         self.bn1 = nn.BatchNorm2d(inplanes)
         self.conv1 = nn.Conv2d(inplanes, planes, kernel_size=1, bias=False)
         self.bn2 = nn.BatchNorm2d(planes)
-        # self.conv2 = nn.Conv2d(planes, growthRate, kernel_size=3, padding=1, bias=False)
 
-        padding = dilation if dilation > 1 else 1
-        # self.conv2 = nn.Conv2d(planes, growthRate, kernel_size=3,
-        #                        padding=padding, bias=False, dilation=dilation)
+        padding = dilation
 
         # Depthwise Separable Convolution
         self.depthwise = nn.Conv2d(planes, planes, kernel_size=3,
@@ -144,14 +140,14 @@ class SE_DenseNet(nn.Module):
 
     def _make_layer(self, block, blocks, block_num):
         layers = []
-        for i in range(blocks):
+        for _ in range(blocks):
             dilation = 1
             if block_num == 3:  # Dense-Block 3
                 dilation = 2
             elif block_num == 4:  # Dense-Block 4
                 dilation = 4
 
-            layers.append(block(self.inplanes, growthRate=self.growthRate, dropRate=self.dropRate))
+            layers.append(block(self.inplanes, growthRate=self.growthRate, dropRate=self.dropRate, dilation = dilation))
             self.inplanes += self.growthRate
 
         return nn.Sequential(*layers)

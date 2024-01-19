@@ -361,7 +361,7 @@ train_losses_efficientnet, train_accs_efficientnet, val_losses_efficientnet, val
                                                                                                                  val_loader, optimizer, criterion,
                                                                                                                  device, epochs=50, patience=5,
                                                                                                                  checkpoint_path='pth/efficientnet_model_checkpoint.pth',
-                                                                                                                 use_early_stopping=False
+                                                                                                                 use_early_stopping=False)
 ## Evaluate
 class_metrics_efficientnet_v2_m, overall_f1_efficientnet_v2_m, overall_recall_efficientnet_v2_m, all_true_efficientnet_v2_m, all_preds_efficientnet_v2_m = evaluate_model(model_efficientnet_v2_m, test_loader, device, categories)
 

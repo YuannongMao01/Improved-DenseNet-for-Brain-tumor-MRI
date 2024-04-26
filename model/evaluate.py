@@ -5,50 +5,99 @@ import torch.nn as nn
 import torch.nn.functional as F
 from sklearn.metrics import f1_score, recall_score
 
-def evaluate_model(model, test_loader, device, categories):
-    model.eval()
-    all_preds = []
-    all_true = []
+def train_model(model, train_loader, val_loader, optimizer, criterion, device, scheduler=None, use_scheduler=False, epochs=10, patience=3, checkpoint_path='best_model_checkpoint.pth', use_early_stopping=True, for_val_loss_only=False):
+    model.to(device)
 
-    correct_pred = {classname: 0 for classname in categories}
-    total_pred = {classname: 0 for classname in categories}
+    # Early stopping and best model parameters
+    best_val_loss = float('inf')
+    best_model_state = None
+    patience_counter = 0
 
-    with torch.no_grad():
-        for inputs, labels in test_loader:
-            inputs = inputs.to(device)
-            labels = labels.to(device)
-            batch_size, ncrops, c, h, w = inputs.size()
+    # Initialize lists to store per-epoch loss and accuracy for both training and validation
+    train_losses, val_losses = [], []
+    train_accs, val_accs = [], []
 
-            outputs = model(inputs.view(-1, c, h, w))  # resize as (batch_size * ncrops, c, h, w)
-            outputs = outputs.view(batch_size, ncrops, -1).mean(1)  # Calculate the average of each image crop
+    for epoch in range(epochs):
+        # Training Phase
+        model.train()
+        running_loss = 0.0
+        running_corrects = 0
 
-            _, predictions = torch.max(outputs, 1)
+        for inputs, labels in train_loader:
+            inputs, labels = inputs.to(device), labels.to(device)
 
-            all_preds.extend(predictions.cpu().numpy())
-            all_true.extend(labels.cpu().numpy())
+            optimizer.zero_grad()
+            
+            outputs = model(inputs)
+            _, preds = torch.max(outputs, 1)
+            loss = criterion(outputs, labels)
+            loss.backward()
+            optimizer.step()
 
-            for label, prediction in zip(labels, predictions):
-                if label == prediction:
-                    correct_pred[categories[label]] += 1
-                total_pred[categories[label]] += 1
+            running_loss += loss.item() * inputs.size(0)
+            running_corrects += torch.sum(preds == labels.data)
 
-    class_metrics = {}
-    for classname, correct_count in correct_pred.items():
-        accuracy = 100 * float(correct_count) / total_pred[classname]
-        class_metrics[classname] = {'Accuracy': accuracy}
-        print(f'Accuracy for {classname:5s} is {accuracy:.6f}')
+        train_loss = running_loss / len(train_loader.dataset)
+        train_acc = running_corrects.double() / len(train_loader.dataset)
+        train_losses.append(train_loss)
+        train_accs.append(train_acc)
 
-    f1 = f1_score(all_true, all_preds, average=None, labels=list(range(len(categories))))
-    recall = recall_score(all_true, all_preds, average=None, labels=list(range(len(categories))))
+        print(f'Epoch {epoch + 1}/{epochs}')
+        print(f'Training Loss: {train_loss:.6f} Training Accuracy: {train_acc:.6f}')
 
-    for i, classname in enumerate(categories):
-        class_metrics[classname]['F1 Score'] = f1[i]
-        class_metrics[classname]['Recall'] = recall[i]
-        print(f'F1 Score for {classname:5s} is {f1[i]:.6f}, Recall for {classname:5s} is {recall[i]:.6f}')
+        # Validation Phase
+        model.eval()
+        running_loss = 0.0
+        running_corrects = 0
+        with torch.no_grad():
+            for inputs, labels in val_loader:
+                inputs, labels = inputs.to(device), labels.to(device)
 
-    overall_f1 = f1_score(all_true, all_preds, average='weighted')
-    overall_recall = recall_score(all_true, all_preds, average='weighted')
-    print(f'Overall F1 Score: {overall_f1:.6f}')
-    print(f'Overall Recall: {overall_recall:.6f}')
+                outputs = model(inputs)
+                _, preds = torch.max(outputs, 1)
+                loss = criterion(outputs, labels)
 
-    return class_metrics, overall_f1, overall_recall, all_true, all_preds
+                running_loss += loss.item() * inputs.size(0)
+                running_corrects += torch.sum(preds == labels.data)
+
+        val_loss = running_loss / len(val_loader.dataset)
+        val_acc = running_corrects.double() / len(val_loader.dataset)
+        val_losses.append(val_loss)
+        val_accs.append(val_acc)
+
+        print(f'Validation Loss: {val_loss:.6f} Validation Accuracy: {val_acc:.6f}')
+
+        # Checkpoint and Early Stopping Check
+        if val_loss < best_val_loss:
+            best_val_loss = val_loss
+            best_model_state = model.state_dict()  # Update best model state
+            patience_counter = 0
+        else:
+            if use_early_stopping:
+                patience_counter += 1
+
+                if patience_counter >= patience:
+                    print(f'Early stopping triggered at epoch {epoch + 1}')
+                    break
+
+        # Update scheduler if it's being used
+        if use_scheduler:
+            if isinstance(scheduler, torch.optim.lr_scheduler.ReduceLROnPlateau):
+                scheduler.step(val_loss)
+            else:
+                scheduler.step()
+
+    # save the best model here
+    if best_model_state is not None:
+        torch.save({
+            'epoch': epoch,
+            'model_state_dict': best_model_state,
+            'optimizer_state_dict': optimizer.state_dict(),
+            'loss': best_val_loss,
+        }, checkpoint_path)
+        print(f'Best model saved: {best_val_loss}')
+
+    if for_val_loss_only:
+        return best_val_loss
+
+    return train_losses, train_accs, val_losses, val_accs

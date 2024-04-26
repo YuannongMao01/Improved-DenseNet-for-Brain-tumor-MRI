@@ -22,6 +22,7 @@ def train_model(model, train_loader, val_loader, optimizer, criterion, device, s
             inputs, labels = inputs.to(device), labels.to(device)
 
             optimizer.zero_grad()
+            
             outputs = model(inputs)
             _, preds = torch.max(outputs, 1)
             loss = criterion(outputs, labels)

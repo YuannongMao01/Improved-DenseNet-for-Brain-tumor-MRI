@@ -60,7 +60,7 @@ The Dilated SE-DenseNet demonstrates superior learning ability, outperforming se
 - Swin-B
 - DenseNet-121
 
-<img width="1088" alt="Results" src="https://github.com/YuannongMao01/Improved-DenseNet-for-Brain-tumor-MRI/assets/89234579/ae58fc9d-2886-4d62-8bb7-f7d1f63250a9">
+<img width="1007" height="521" alt="Results" src="https://github.com/user-attachments/assets/23551434-c966-4d10-8dec-3a3b34973569" />
 
 ## Citation
 

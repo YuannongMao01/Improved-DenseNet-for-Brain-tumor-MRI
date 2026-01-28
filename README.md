@@ -1,34 +1,94 @@
-# Dilated SE-DenseNet for Radiographic Brain Tumor Classification
+# Dilated SE-DenseNet for Brain Tumor MRI Classification
+
+[![Paper](https://img.shields.io/badge/Paper-Scientific%20Reports-blue)](https://www.nature.com/articles/s41598-025-86752-y)
+[![Dataset](https://img.shields.io/badge/Dataset-Kaggle-20BEFF)](https://www.kaggle.com/datasets/masoudnickparvar/brain-tumor-mri-dataset)
 
 ## Overview
-This repository implements the enhanced DenseNet121 architecture integrated by dilated convolution and Squeeze-and-Excitation (SE) networks to improve the diagnostic accuracy in brain tumor classification through MRI images.
 
-<img width="782" alt="Screen Shot 2023-12-10 at 10 39 50 PM" src="https://github.com/YuannongMao01/Improved-DenseNet-for-Brain-tumor-MRI/assets/89234579/a6bbfe56-f307-4e04-a74a-3b12ee064747">
+This repository contains the official implementation of our paper published in **Scientific Reports** (Nature Portfolio):
 
+> **[Dilated SE-DenseNet for Radiographic Brain Tumor Classification](https://www.nature.com/articles/s41598-025-86752-y)**
 
-## Data
-We trained and evaluated our model using a comprehensive Kaggle brain tumor dataset comprising 7023 images, classified into four categories, including healthy brain. The dataset was augmented and preprocessed for optimal model training.\
-The dataset can be found [here](https://www.kaggle.com/datasets/masoudnickparvar/brain-tumor-mri-dataset)
+We present an enhanced DenseNet-121 architecture that integrates dilated convolutions and Squeeze-and-Excitation (SE) networks to improve diagnostic accuracy in brain tumor classification from MRI images.
+
+<img width="782" alt="Overview" src="https://github.com/YuannongMao01/Improved-DenseNet-for-Brain-tumor-MRI/assets/89234579/a6bbfe56-f307-4e04-a74a-3b12ee064747">
+
+## Dataset
+
+We trained and evaluated our model using a comprehensive [Kaggle brain tumor dataset](https://www.kaggle.com/datasets/masoudnickparvar/brain-tumor-mri-dataset) comprising 7,023 MRI images classified into four categories:
+- Glioma
+- Meningioma
+- Pituitary tumor
+- Healthy brain (no tumor)
+
+The dataset was augmented and preprocessed for optimal model training.
 
 ## Model Architecture
-Our model advances upon the traditional DenseNet-121 architecture, integrating dilated convolution in place of some standard convolutional layers and augmenting with an SE mechanism. These innovations enhance the model’s representation learning capabilities.
 
-<img width="1102" alt="Screen Shot 2023-12-10 at 10 44 07 PM" src="https://github.com/YuannongMao01/Improved-DenseNet-for-Brain-tumor-MRI/assets/89234579/1e657d3b-dd96-4e39-a2a3-f97662170fa9">
+Our model builds upon the traditional DenseNet-121 architecture with two key enhancements:
+1. **Dilated Convolutions**: Replace standard convolutional layers to expand the receptive field without increasing parameters
+2. **Squeeze-and-Excitation (SE) Mechanism**: Enables adaptive channel-wise feature recalibration
+
+These innovations enhance the model's representation learning capabilities for medical image analysis.
+
+<img width="1102" alt="Architecture" src="https://github.com/YuannongMao01/Improved-DenseNet-for-Brain-tumor-MRI/assets/89234579/1e657d3b-dd96-4e39-a2a3-f97662170fa9">
 
 ## Training
-We used the AdamW optimizer with a custom Label Smoothing cross-entropy loss function and employed a Cosine Annealing learning rate scheduler. The model was trained over 50 epochs with a batch size of 256.
 
-## Testing
-Our evaluation used a 10-crop method, involving resizing each image to 256 × 256 pixels and producing ten distinct crops per image. The final test report averages the results over these crops.
+| Parameter | Value |
+|-----------|-------|
+| Optimizer | AdamW |
+| Loss Function | Cross-Entropy |
+| LR Scheduler | Cosine Annealing |
+| Epochs | 50 |
+| Batch Size | 256 |
+
+## Evaluation
+
+Our evaluation employs a **10-crop testing method**:
+1. Resize each image to 256 × 256 pixels
+2. Generate 10 distinct crops per image
+3. Average predictions across all crops for the final result
 
 ## Results
-The model demonstrated superior learning ability, outperforming pre-trained models: ResNet50, VGG16, ViT_16, DenseNet121, and Efficient_V2 in later training epochs and in testing.
 
-<img width="1088" alt="Screen Shot 2023-12-10 at 10 49 14 PM" src="https://github.com/YuannongMao01/Improved-DenseNet-for-Brain-tumor-MRI/assets/89234579/ae58fc9d-2886-4d62-8bb7-f7d1f63250a9">
+The Dilated SE-DenseNet demonstrates superior learning ability, outperforming several pre-trained baseline models:
+- ResNet-101
+- VGG-19
+- MobileNet-V2
+- ViT-L/16
+- Swin-B
+- DenseNet-121
 
+<img width="1088" alt="Results" src="https://github.com/YuannongMao01/Improved-DenseNet-for-Brain-tumor-MRI/assets/89234579/ae58fc9d-2886-4d62-8bb7-f7d1f63250a9">
 
-## Future Work
-Future research will focus on the implementation of advanced image augmentation techniques, integration of multi-scale network architecture, and adaptive dilation convolution rates.
+## Citation
 
-## Contributions
-This work was collaboratively conducted by [Yuannong Mao](https://www.linkedin.com/in/yuannongmao) and [Edward Jiwook Kim](https://www.linkedin.com/in/edwardjiwookkim) from University of Waterloo.
+If you find this work useful, please cite our paper:
+
+```bibtex
+@article{mao2025dilated,
+  title={Dilated SE-DenseNet for brain tumor MRI classification},
+  author={Mao, Yuannong and Kim, Jiwook and Podina, Lena and Kohandel, Mohammad},
+  journal={Scientific Reports},
+  volume={15},
+  number={1},
+  pages={3596},
+  year={2025},
+  publisher={Nature Publishing Group},
+  doi={10.1038/s41598-025-86752-y}
+}
+```
+
+## Authors
+
+This work was conducted at the University of Waterloo (2024):
+
+- [Yuannong Mao](https://www.linkedin.com/in/yuannongmao) — 4th year undergraduate, Applied Mathematics
+- [Jiwook Kim](https://www.linkedin.com/in/edwardjiwookkim) — 4th year undergraduate, Applied Mathematics
+- Lena Podina — David R. Cheriton School of Computer Science
+- Mohammad Kohandel — Applied Mathematics
+
+## License
+
+This project is licensed under [CC BY-NC-ND 4.0](http://creativecommons.org/licenses/by-nc-nd/4.0/).
